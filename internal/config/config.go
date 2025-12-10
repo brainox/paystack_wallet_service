@@ -93,13 +93,19 @@ func (c *Config) Validate() error {
 	if c.Paystack.SecretKey == "" {
 		return fmt.Errorf("PAYSTACK_SECRET_KEY is required")
 	}
-	if c.Database.Password == "" {
-		return fmt.Errorf("DB_PASSWORD is required")
+	// DB_PASSWORD only required if DATABASE_URL is not set
+	if c.Database.Password == "" && os.Getenv("DATABASE_URL") == "" {
+		return fmt.Errorf("DB_PASSWORD or DATABASE_URL is required")
 	}
 	return nil
 }
 
 func (c *DatabaseConfig) GetDSN() string {
+	// Check if DATABASE_URL is set (Heroku style)
+	if databaseURL := os.Getenv("DATABASE_URL"); databaseURL != "" {
+		return databaseURL
+	}
+	
 	return fmt.Sprintf(
 		"host=%s port=%s user=%s password=%s dbname=%s sslmode=%s",
 		c.Host, c.Port, c.User, c.Password, c.DBName, c.SSLMode,
