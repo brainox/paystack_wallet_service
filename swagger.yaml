@@ -4,15 +4,27 @@ info:
   description: |
     Backend wallet service with Paystack integration, JWT authentication, and API key management.
     
-    ## Authentication
+    ## 🚀 Quick Start Guide
+    
+    ### Step 1: Get Your JWT Token
+    **IMPORTANT**: The Google sign-in must be done in your browser, not from Swagger UI.
+    
+    1. **Open this link in a new tab**: [https://pure-plateau-79480-6fc7adb7399c.herokuapp.com/auth/google](https://pure-plateau-79480-6fc7adb7399c.herokuapp.com/auth/google)
+    2. Sign in with your Google account
+    3. Copy the JWT token from the JSON response: `{"token": "eyJ..."}`
+    4. Click the **"Authorize"** button at the top of this page
+    5. Paste your token in the "Value" field (Bearer will be added automatically)
+    6. Click "Authorize" and close the dialog
+    
+    ### Step 2: Test the API
+    Now you can test all protected endpoints! Try:
+    - `GET /wallet/balance` - Check your wallet balance
+    - `POST /keys/create` - Create an API key
+    - `GET /wallet/info` - Get your wallet details
+    
+    ## Authentication Methods
     - **JWT**: Use `Authorization: Bearer <token>` header (obtained from Google OAuth)
     - **API Key**: Use `x-api-key: <key>` header (obtained from `/keys/create`)
-    
-    ## Getting Started
-    1. Sign in with Google at `/auth/google`
-    2. Get your JWT token from the callback
-    3. Create API keys for service-to-service access
-    4. Use JWT or API keys to access wallet endpoints
     
     ## Live API
     Base URL: https://pure-plateau-79480-6fc7adb7399c.herokuapp.com
@@ -61,7 +73,17 @@ paths:
       tags:
         - Authentication
       summary: Initiate Google Sign-In
-      description: Redirects user to Google OAuth consent screen
+      description: |
+        ⚠️ **IMPORTANT**: This endpoint must be opened directly in your browser, not executed from Swagger UI.
+        
+        **How to use:**
+        1. Open this URL in a new browser tab: `https://pure-plateau-79480-6fc7adb7399c.herokuapp.com/auth/google`
+        2. Sign in with your Google account
+        3. You'll be redirected to the callback URL with a JWT token in the response
+        4. Copy the token from the JSON response
+        5. Use "Authorize" button above to set the Bearer token for other endpoints
+        
+        This endpoint redirects to Google OAuth consent screen and cannot be tested via AJAX/fetch from Swagger UI due to browser security (CORS).
       responses:
         '302':
           description: Redirect to Google OAuth
@@ -71,14 +93,26 @@ paths:
       tags:
         - Authentication
       summary: Google OAuth Callback
-      description: Handles Google OAuth callback and returns JWT token
+      description: |
+        ℹ️ **NOTE**: This is an automatic callback endpoint handled by Google OAuth flow. You don't call this directly.
+        
+        After signing in at `/auth/google`, Google automatically redirects to this endpoint and you'll see a JSON response with your JWT token.
+        
+        **Example response:**
+        ```json
+        {
+          "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
+        }
+        ```
+        
+        Copy this token and use the "Authorize" button above to authenticate other API requests.
       parameters:
         - name: code
           in: query
           required: true
           schema:
             type: string
-          description: Authorization code from Google
+          description: Authorization code from Google (automatically provided)
       responses:
         '200':
           description: Login successful
