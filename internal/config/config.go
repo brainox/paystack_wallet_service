@@ -45,9 +45,12 @@ type PaystackConfig struct {
 }
 
 func Load() (*Config, error) {
+	// Heroku provides PORT environment variable
+	port := getEnv("PORT", getEnv("SERVER_PORT", "8080"))
+	
 	config := &Config{
 		Server: ServerConfig{
-			Port: getEnv("SERVER_PORT", "8080"),
+			Port: port,
 			Host: getEnv("SERVER_HOST", "0.0.0.0"),
 		},
 		Database: DatabaseConfig{
