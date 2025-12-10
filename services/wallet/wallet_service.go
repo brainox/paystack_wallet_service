@@ -167,6 +167,10 @@ func (s *WalletService) GetBalance(userID uuid.UUID) (float64, error) {
 	return wallet.Balance, nil
 }
 
+func (s *WalletService) GetWalletDetails(userID uuid.UUID) (*models.Wallet, error) {
+	return s.walletRepo.GetByUserID(userID)
+}
+
 // Transfer transfers money from one wallet to another
 func (s *WalletService) Transfer(senderUserID uuid.UUID, recipientWalletNumber string, amount float64) error {
 	if amount <= 0 {

@@ -141,6 +141,27 @@ func (h *WalletHandler) GetBalance(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{"balance": balance})
 }
 
+// GetWalletInfo gets the wallet information including wallet number
+func (h *WalletHandler) GetWalletInfo(c *gin.Context) {
+	userID, err := middleware.GetUserID(c)
+	if err != nil {
+		c.JSON(http.StatusUnauthorized, gin.H{"error": "User not authenticated"})
+		return
+	}
+
+	wallet, err := h.walletService.GetWalletDetails(userID)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		return
+	}
+
+	c.JSON(http.StatusOK, gin.H{
+		"wallet_number": wallet.WalletNumber,
+		"balance":       wallet.Balance,
+		"created_at":    wallet.CreatedAt,
+	})
+}
+
 type TransferRequest struct {
 	WalletNumber string  `json:"wallet_number" binding:"required"`
 	Amount       float64 `json:"amount" binding:"required,gt=0"`

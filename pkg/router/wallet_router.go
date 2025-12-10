@@ -83,6 +83,12 @@ func (r *WalletRouter) Setup() *gin.Engine {
 			r.walletHandler.GetBalance,
 		)
 
+		// Get wallet info including wallet number (read permission)
+		wallet.GET("/info",
+			middleware.RequirePermission(models.PermissionRead),
+			r.walletHandler.GetWalletInfo,
+		)
+
 		// Transfer (transfer permission)
 		wallet.POST("/transfer",
 			middleware.RequirePermission(models.PermissionTransfer),
