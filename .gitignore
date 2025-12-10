@@ -43,3 +43,10 @@ build-errors.log
 
 # Binary output
 bin/
+
+# Shell scripts (except those needed for production)
+*.sh
+
+# Markdown files (except README)
+*.md
+!README.md
