@@ -59,6 +59,8 @@ func (r *WalletRouter) Setup() *gin.Engine {
 	{
 		keys.POST("/create", r.apiKeyHandler.CreateAPIKey)
 		keys.POST("/rollover", r.apiKeyHandler.RolloverAPIKey)
+		keys.GET("/list", r.apiKeyHandler.ListAPIKeys)
+		keys.DELETE("/:id", r.apiKeyHandler.DeleteAPIKey)
 	}
 
 	// Wallet routes

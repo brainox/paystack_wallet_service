@@ -127,6 +127,14 @@ func (s *APIKeyService) CreateAPIKey(userID uuid.UUID, name string, permissions 
 	return apiKey, apiKeyModel, nil
 }
 
+func (s *APIKeyService) ListAPIKeys(userID uuid.UUID) ([]models.APIKey, error) {
+	return s.repo.GetByUserID(userID)
+}
+
+func (s *APIKeyService) DeleteAPIKey(userID uuid.UUID, keyID uuid.UUID) error {
+	return s.RevokeAPIKey(keyID, userID)
+}
+
 // ValidateAPIKey validates an API key and returns the associated key record
 func (s *APIKeyService) ValidateAPIKey(apiKey string) (*models.APIKey, error) {
 	keyHash := s.HashAPIKey(apiKey)
