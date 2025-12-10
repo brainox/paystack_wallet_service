@@ -37,3 +37,9 @@ build-errors.log
 *.toml
 
 .DS_Store
+
+# Environment variables (never commit secrets)
+.env
+
+# Binary output
+bin/
