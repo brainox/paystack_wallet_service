@@ -39,7 +39,6 @@ func (h *AuthHandler) HandleGoogleCallback(c *gin.Context) {
 	}
 
 	c.JSON(http.StatusOK, gin.H{
-		"token":   token,
-		"message": "Login successful",
+		"token": token,
 	})
 }
