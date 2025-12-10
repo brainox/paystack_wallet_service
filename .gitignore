@@ -23,7 +23,6 @@ vendor/
 go.work
 go.work.sum
 
-docs/
 logs/
 cronlogs/
 config.yaml

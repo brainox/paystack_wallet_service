@@ -40,6 +40,12 @@ func (r *WalletRouter) Setup() *gin.Engine {
 		c.JSON(200, gin.H{"status": "ok"})
 	})
 
+	// Swagger documentation
+	router.Static("/docs", "./docs")
+	router.GET("/swagger.yaml", func(c *gin.Context) {
+		c.File("./swagger.yaml")
+	})
+
 	// Auth routes (no authentication required)
 	auth := router.Group("/auth")
 	{
