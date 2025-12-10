@@ -1,1 +1,1 @@
-web: bin/wallet-service
+web: bin/paystack_wallet_service
